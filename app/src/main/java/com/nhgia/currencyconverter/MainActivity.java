@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         }
         catch (NullPointerException e){}
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.act_main_new);
 
         List<Country> image_details = getListData();
         final CustomListAdapter myAdpt = new CustomListAdapter(this, image_details);
@@ -206,8 +206,8 @@ public class MainActivity extends AppCompatActivity {
         Country usa = new Country("USD", "us", "US Dollar", myValueInput, 0.000043);
         Country th = new Country("THB", "th", "Thai Bath", myValueInput, 0.001359);
         Country hkd = new Country("HKD", "hk", "Hong Kong Dollar", myValueInput, 0.000334);
-        Country hkd2 = new Country("HKD", "hk", "Hong Kong Dollar", myValueInput, 0.000334);
-        Country hkd3 = new Country("HKD", "hk", "Hong Kong Dollar", myValueInput, 0.000334);
+        Country hkd2 = new Country("GBP", "gb", "Pound Sterling", myValueInput, 0.000034);
+        Country hkd3 = new Country("GNF", "gn", "Guinean Franc", myValueInput, 0.42);
 
         list.add(ru);
         list.add(usa);
