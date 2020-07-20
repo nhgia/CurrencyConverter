@@ -1,5 +1,6 @@
 package com.nhgia.currencyconverter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class CustomListAdapter  extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("DefaultLocale")
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
@@ -55,7 +57,7 @@ public class CustomListAdapter  extends BaseAdapter {
         holder.countryNameView.setText(country.getCountryName());
         holder.currencyView.setText(country.getCurrency());
         double money = Double.parseDouble(country.getCurrentValue()) * country.getConvertRate();
-        holder.moneyView.setText(String.valueOf(money));
+        holder.moneyView.setText(String.format("%f", money));
 
         int imageId = this.getMipmapResIdByName(country.getFlagName());
 

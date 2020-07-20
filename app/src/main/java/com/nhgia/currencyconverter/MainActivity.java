@@ -2,6 +2,7 @@ package com.nhgia.currencyconverter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.view.View;
@@ -11,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import android.widget.AdapterView;
 import android.widget.Button;
+
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,15 +73,34 @@ public class MainActivity extends AppCompatActivity {
         //BUTTON HANDLER
         final Button button = findViewById(R.id.buttonEqual);
         button.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             public void onClick(View v) {
-                if (myValueInput.substring(myValueInput.length() - 1).equals(".")) {
+                Context rhino = Context.enter();
+                rhino.setOptimizationLevel(-1);
+
+                String evaluation = myValueInput;
+                try {
+                    Scriptable scope = rhino.initStandardObjects();
+                    myValueInput = rhino.evaluateString(scope, evaluation, "JavaScript", 1, null).toString();
+                    boolean checkChar = myValueInput.matches("^[a-zA-Z]*$");
+                    if (myValueInput.equals("Infinity")) {
+                        textView.setText("Divide by 0");
+                    }
+                    else if (checkChar) {
+                        textView.setText("Bad expression");
+                    }
+                    else {
+                        textView.setText(myValueInput);
+                        currentCountry.setCurrentValue(myValueInput);
+                        myAdpt.updateList(getListData());
+                        myAdpt.notifyDataSetChanged();
+                    }
+                }
+                catch (Exception e) {
                     textView.setText("Bad expression");
                 }
-                else {
-                    textView.setText(myValueInput);
-                    currentCountry.setCurrentValue(myValueInput);
-                    myAdpt.updateList(getListData());
-                    myAdpt.notifyDataSetChanged();
+                finally {
+                    Context.exit();
                 }
 
             }
@@ -185,6 +208,30 @@ public class MainActivity extends AppCompatActivity {
         buttonPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 myValueInput += "+";
+                textView.setText(myValueInput);
+            }
+        });
+
+        final Button buttonMinus = findViewById(R.id.buttonSubtract);
+        buttonMinus.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                myValueInput += "-";
+                textView.setText(myValueInput);
+            }
+        });
+
+        final Button buttonMul = findViewById(R.id.buttonMultiply);
+        buttonMul.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                myValueInput += "*";
+                textView.setText(myValueInput);
+            }
+        });
+
+        final Button buttonDiv = findViewById(R.id.buttonDevide);
+        buttonDiv.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                myValueInput += "/";
                 textView.setText(myValueInput);
             }
         });
