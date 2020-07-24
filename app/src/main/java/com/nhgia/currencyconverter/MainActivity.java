@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.content.Intent;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
@@ -49,8 +50,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         List<Country> image_details2 = getListData2();
+        final CustomListAdapter2 myAdpt2 = new CustomListAdapter2(this, image_details2);
         final ListView listView2 = (ListView) findViewById(R.id.listView2);
-        listView2.setAdapter(new CustomListAdapter2(this, image_details2));
+        listView2.setAdapter(myAdpt2);
 
         // When the user clicks on the ListItem
         listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -61,8 +63,10 @@ public class MainActivity extends AppCompatActivity {
                 Country country = (Country) o;
 //                Toast.makeText(MainActivity.this, "Selected :" + " " + country.getCountryName(), Toast.LENGTH_LONG).show();
                 currentCountry = country;
-                myAdpt.updateList(getListData());
+                myAdpt.updateList(getListData2());
                 myAdpt.notifyDataSetChanged();
+                myAdpt2.updateList(getListData2());
+                myAdpt2.notifyDataSetChanged();
             }
         });
 
@@ -94,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
                         currentCountry.setCurrentValue(myValueInput);
                         myAdpt.updateList(getListData());
                         myAdpt.notifyDataSetChanged();
+                        myAdpt2.updateList(getListData2());
+                        myAdpt2.notifyDataSetChanged();
                     }
                 }
                 catch (Exception e) {
@@ -243,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
         List<Country> list = new ArrayList<Country>();
         Country vietnam = new Country("VND", "vn", "Vietnamese Dong", myValueInput, 1.0);
         list.add(vietnam);
-        list.add(currentCountry);
+        //list.add(currentCountry);
         return list;
     }
 

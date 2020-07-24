@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">currencyconverter</string>
+    <string name="app_name">CurrencyConverter</string>
     <string name="expression_title">EXP_TLT</string>
     <string name="country_title">COUNTRY_CODE</string>
 </resources>
