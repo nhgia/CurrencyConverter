@@ -122,6 +122,7 @@ public class CustomListAdapter2 extends BaseAdapter {
     public void updateList(List<Country> listData) {
         this.listData.clear();
         this.listData.addAll(listData);
+        this.notifyDataSetChanged();
     }
 
     static class ViewHolder {

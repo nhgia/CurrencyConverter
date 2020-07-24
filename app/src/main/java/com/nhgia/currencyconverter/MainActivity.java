@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.content.Intent;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
@@ -59,14 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                Object o = listView2.getItemAtPosition(position);
-                Country country = (Country) o;
-//                Toast.makeText(MainActivity.this, "Selected :" + " " + country.getCountryName(), Toast.LENGTH_LONG).show();
-                currentCountry = country;
-                myAdpt.updateList(getListData2());
-                myAdpt.notifyDataSetChanged();
-                myAdpt2.updateList(getListData2());
-                myAdpt2.notifyDataSetChanged();
+                //
             }
         });
 
@@ -244,6 +236,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (data != null) {
+//            Toast.makeText(MainActivity.this, "sbvafsbs :" , Toast.LENGTH_LONG).show();
+//        }
+//    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final ListView listView = (ListView) findViewById(R.id.listView2);
+        final CustomListAdapter2 adpt = (CustomListAdapter2) listView.getAdapter();
+
+        adpt.updateList(getListData2());
+        adpt.notifyDataSetChanged();
+    }
 
     private  List<Country> getListData() {
         List<Country> list = new ArrayList<Country>();
@@ -254,20 +264,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private  List<Country> getListData2() {
-        List<Country> list = new ArrayList<Country>();
-        Country ru = new Country("RUB", "ru", "Russian Rouble", myValueInput, 0.0031);
-        Country usa = new Country("USD", "us", "US Dollar", myValueInput, 0.000043);
-        Country th = new Country("THB", "th", "Thai Bath", myValueInput, 0.001359);
-        Country hkd = new Country("HKD", "hk", "Hong Kong Dollar", myValueInput, 0.000334);
-        Country hkd2 = new Country("GBP", "gb", "Pound Sterling", myValueInput, 0.000034);
-        Country hkd3 = new Country("GNF", "gn", "Guinean Franc", myValueInput, 0.42);
-
-        list.add(ru);
-        list.add(usa);
-        list.add(th);
-        list.add(hkd);
-        list.add(hkd2);
-        list.add(hkd3);
+        CurrenciesList.shared.updateCurrentValue(myValueInput);
+        List<Country> list = new ArrayList<Country>(CurrenciesList.shared.listCurrencies);
         return list;
     }
+
 }
