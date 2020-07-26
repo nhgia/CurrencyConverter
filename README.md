@@ -23,8 +23,16 @@
 
 
 
-### Features (HW_2)
-To be updated
+### Features
+The currency converter application with the following basic functionalitys:
+- Allow user to perform basic calculations.
+- Allow user to enter an amount and convert that amount into the corresponding foreign currency.
+- Allow user to select foreign currencies to be converted.
+
+### Changelogs
+- (HW_2) Now support landscape rotation.
+- (HW_2) Add Multiple screen support.
+- (HW_2) Math expression bugs fixed.
 
 ### Screenshot
-To be updated
+![Alt text](/scrshotImage/2.png?raw=true "Landscape Mode")
