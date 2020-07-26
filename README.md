@@ -35,4 +35,4 @@ The currency converter application with the following basic functionalitys:
 - (HW_2) Math expression bugs fixed.
 
 ### Screenshot
-![Alt text](/scrshotImage/2.png?raw=true "Landscape Mode")
+![Alt text](/scrshot/2.png?raw=true "Landscape Mode")
