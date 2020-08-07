@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.content.Intent;
+
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
@@ -61,8 +63,10 @@ public class MainActivity extends AppCompatActivity {
                 Country country = (Country) o;
 //                Toast.makeText(MainActivity.this, "Selected :" + " " + country.getCountryName(), Toast.LENGTH_LONG).show();
                 currentCountry = country;
+                currentCountry.setCurrentValue(myValueInput);
                 myAdpt.updateList(getListData());
                 myAdpt.notifyDataSetChanged();
+                HistoryList.shared.listCurrencies.add(currentCountry);
             }
         });
 
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         currentCountry.setCurrentValue(myValueInput);
                         myAdpt.updateList(getListData());
                         myAdpt.notifyDataSetChanged();
+                        HistoryList.shared.listCurrencies.add(currentCountry);
                     }
                 }
                 catch (Exception e) {
@@ -106,11 +111,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Button buttonHist = findViewById(R.id.buttonHist);
+        buttonHist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(MainActivity.this, HistoryActivity.class);
+                String value = myIntent.getStringExtra("historyActivity");
+                myIntent.putExtra("historyActivity",value); //Optional parameters
+                MainActivity.this.startActivity(myIntent);
+            }
+        });
+
         final Button button0 = findViewById(R.id.button0);
         button0.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 myValueInput += "0";
                 textView.setText(myValueInput);
+
             }
         });
 

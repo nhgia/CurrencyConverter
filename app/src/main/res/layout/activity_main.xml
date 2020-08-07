@@ -61,7 +61,7 @@
         android:id="@+id/button14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="263dp"
+        android:layout_marginEnd="20dp"
         android:background="#00FFFFFF"
         android:text="⌫"
         android:textColor="#FFFFFF"
@@ -69,8 +69,20 @@
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/buttonDevide"
         app:layout_constraintEnd_toEndOf="@+id/view2"
-        app:layout_constraintStart_toStartOf="@+id/view2"
         app:layout_constraintTop_toTopOf="@+id/view2" />
+
+    <Button
+        android:id="@+id/buttonHist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="4dp"
+        android:text="HISTORY"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@+id/view2"/>
 
     <Button
         android:id="@+id/button0"
