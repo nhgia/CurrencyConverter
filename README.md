@@ -33,6 +33,10 @@ The currency converter application with the following basic functionalitys:
 - (HW_2) Now support landscape rotation.
 - (HW_2) Add Multiple screen support.
 - (HW_2) Math expression bugs fixed.
+- (HW_4) Add feature to update convert rate dynamically from the internet.
+- (HW_4) Add feature to view history of converted money.
+
 
 ### Screenshot
 ![Alt text](/scrshot/2.png?raw=true "Landscape Mode")
+![Alt text](/scrshot/3.png?raw=true "History Screen")
