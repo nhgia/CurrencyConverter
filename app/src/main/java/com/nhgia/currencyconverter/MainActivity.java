@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 import android.view.View;
 import android.widget.TextView;
@@ -15,14 +16,28 @@ import android.widget.Button;
 import android.content.Intent;
 
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.tools.jsc.Main;
 
 public class MainActivity extends AppCompatActivity {
 
     Country currentCountry = new Country("USD", "us", "US Dollar", "10000", 0.000043);
     String myValueInput = "10000";
     String myValueOutput = "10000";
+
+    ListView listView;
+    ListView listView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.act_main_new);
 
+        listView = (ListView) findViewById(R.id.listView1);
+        listView2 = (ListView) findViewById(R.id.listView2);
+
         List<Country> image_details = getListData();
         final CustomListAdapter myAdpt = new CustomListAdapter(this, image_details);
-        final ListView listView = (ListView) findViewById(R.id.listView1);
         listView.setAdapter(myAdpt);
         // When the user clicks on the ListItem
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -50,9 +67,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        List<Country> image_details2 = getListData2();
-        final ListView listView2 = (ListView) findViewById(R.id.listView2);
-        listView2.setAdapter(new CustomListAdapter2(this, image_details2));
+        CountryList.shared.listCurrencies = getListData2();
+        listView2.setAdapter(new CustomListAdapter2(this, CountryList.shared.listCurrencies));
 
         // When the user clicks on the ListItem
         listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -73,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         // TEXT VIEW
         final TextView textView = findViewById(R.id.textView);
         textView.setText(myValueInput);
+
+        sendAndRequestResponse();
 
         //BUTTON HANDLER
         final Button button = findViewById(R.id.buttonEqual);
@@ -255,6 +273,54 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void sendAndRequestResponse() {
+
+        String url = "http://data.fixer.io/api/latest?access_key=b901367a307a445358cf2a07a15052bc&symbols=VND,RUB,USD,THB,HKD,GBP,GNF";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    Toast.makeText(MainActivity.this, "Data updated, date: " + response.getString("date"), Toast.LENGTH_LONG).show();
+                    Double vnRate = response.getJSONObject("rates").getDouble("VND");
+
+                    //Warning - Bad HARD CODE below
+                    Double ruRate = response.getJSONObject("rates").getDouble("RUB") / vnRate;
+                    Double usRate = response.getJSONObject("rates").getDouble("USD") / vnRate;
+                    Double thRate = response.getJSONObject("rates").getDouble("THB") / vnRate;
+                    Double hkRate = response.getJSONObject("rates").getDouble("HKD") / vnRate;
+                    Double gbRate = response.getJSONObject("rates").getDouble("GBP") / vnRate;
+                    Double gnRate = response.getJSONObject("rates").getDouble("GNF") / vnRate;
+                    CountryList.shared.listCurrencies.get(0).setConvertRate(ruRate);
+                    CountryList.shared.listCurrencies.get(1).setConvertRate(usRate);
+                    CountryList.shared.listCurrencies.get(2).setConvertRate(thRate);
+                    CountryList.shared.listCurrencies.get(3).setConvertRate(hkRate);
+                    CountryList.shared.listCurrencies.get(4).setConvertRate(gbRate);
+                    CountryList.shared.listCurrencies.get(5).setConvertRate(gnRate);
+
+                    currentCountry = CountryList.shared.listCurrencies.get(1);
+
+                    CustomListAdapter myAdpt = (CustomListAdapter) listView.getAdapter();
+                    myAdpt.updateList(getListData());
+                    myAdpt.notifyDataSetChanged();
+
+                } catch (JSONException e) {
+                    Toast.makeText(MainActivity.this, "Update error: Bad JSON" , Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "Update error: " + error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
 
     private  List<Country> getListData() {
         List<Country> list = new ArrayList<Country>();

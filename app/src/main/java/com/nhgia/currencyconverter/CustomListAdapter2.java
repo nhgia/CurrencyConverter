@@ -62,6 +62,11 @@ public class CustomListAdapter2 extends BaseAdapter {
         return convertView;
     }
 
+    public void updateList(List<Country> listData) {
+        this.listData.clear();
+        this.listData.addAll(listData);
+    }
+
     // Find Image ID corresponding to the name of the image (in the directory mipmap).
     public int getMipmapResIdByName(String resName)  {
         String pkgName = context.getPackageName();

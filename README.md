@@ -22,12 +22,16 @@
 - Run on device, either virtual or real
 
 
-
 ### Features
 The currency converter application with the following basic functionalitys:
 - Allow user to perform basic calculations.
 - Allow user to enter an amount and convert that amount into the corresponding foreign currency.
 - Allow user to select foreign currencies to be converted.
 
+### Changelogs
+- (HW4) Add feature to update convert rate dynamically from the internet.
+- (HW4) Add feature to view history of converted money.
+
 ### Screenshot
 ![Alt text](/scrshotImage/1.png?raw=true "App function")
+![Alt text](/scrshotImage/3.png?raw=true "App function")

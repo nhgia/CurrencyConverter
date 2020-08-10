@@ -3,16 +3,16 @@ package com.nhgia.currencyconverter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryList {
+public class CountryList {
 
     List<Country> listCurrencies;
 
-    public static HistoryList shared = new HistoryList();
-    public HistoryList() {
+    public static CountryList shared = new CountryList();
+    public CountryList() {
         this.listCurrencies = new ArrayList<Country>();
     }
 
-    public HistoryList(List<Country> inputList, int currentValue) {
+    public CountryList(List<Country> inputList, int currentValue) {
         this.listCurrencies = inputList;
     }
 
@@ -23,6 +23,11 @@ public class HistoryList {
         }
     }
 
+    public void updateConvertRate(List<String> myLsString) {
+        // WARNING - HARD CODE BELOW
+
+    }
+
 
     @Override
     public void finalize() {
@@ -31,4 +36,3 @@ public class HistoryList {
     }
 
 }
-
